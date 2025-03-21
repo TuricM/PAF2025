@@ -23,7 +23,7 @@ for i in np.arange(0,t_uk,dt):
 
 fig, ax = plt.subplots(1,3)
 
-ax[0].plot(t,x)
+ax[0].scatter(t,x)
 ax[0].set_xlabel("t [s]")
 ax[0].set_ylabel("x [m]")
 
