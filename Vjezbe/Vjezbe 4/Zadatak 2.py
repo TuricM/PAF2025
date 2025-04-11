@@ -34,6 +34,11 @@ print("%f,%f     %f,%f" %(p.v[0],p.v[1], p.r[0],p.r[1]))'''
 for i in raz:
     #print("%f  ...   %f" %(i, p.range(i)))
     y.append(abs(p.range(i)-D)/D*100) #greska u %
-
+plt.title("Relativna pogreška")
+plt.xlabel("dt/s")
+plt.ylabel("%")
 plt.plot(raz, y)
 plt.show()
+"""Graf nije isti kao primjer u predavanju. 
+Pokušao sam na dva načina, prvo bez klasa i funkcija, kao u vježbi 2, a onda ponovno modificiranjem modula particle.py.
+Rezultat je bio isti, pa sam pokušao u C-u i napravio graf u gnuplotu, ali je rezultat ponovno isti."""

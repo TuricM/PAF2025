@@ -15,9 +15,9 @@ class Particle:
         self.r=[self.pocetni[2][0],self.pocetni[2][1]]
         self.v=[self.v0*m.cos(self.fi),self.v0*m.sin(self.fi)]
     def __move(self, dt):
-        self.v[1] = self.v[1]+ self.g*dt
         self.r[0]=self.r[0]+self.v[0]*dt
         self.r[1]=self.r[1]+self.v[1]*dt
+        self.v[1] = self.v[1]+ self.g*dt
         #print(self.r[0])
     def range(self, dt): #Nova izmjena - dodan argument dt
         while self.r[1]>=0:
