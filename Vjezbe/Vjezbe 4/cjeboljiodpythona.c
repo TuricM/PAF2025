@@ -12,9 +12,9 @@ float domet(float dt){
     float g=-9.81;
 
     while (r[1]>=0){
-        v[1]=v[1]+g*dt;
         r[0]=r[0]+v[0]*dt;
         r[1]=r[1]+v[1]*dt;
+        v[1]=v[1]+g*dt;
     }
     return r[0];
 }
