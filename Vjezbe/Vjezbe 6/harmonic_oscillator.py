@@ -43,3 +43,15 @@ class HarmonicOscillator:
         self.v= [self.v_0]
         self.a= [-self.k/self.m*self.x_0]
         self.t= [0]
+    def period(self, dt):
+        self.reset()
+        br=0
+        while br<=2:
+            self.v.append(self.v[-1]+self.a[-1]*dt)
+            self.x.append(self.x[-1]+self.v[-1]*dt)
+            
+            self.a.append(-self.k/self.m*self.x[-1])
+            self.t.append(self.t[-1]+dt)
+            if self.x[-2]<=0 and self.x[-1]>=0 or self.x[-2]>=0 and self.x[-1]<0:
+                br+=1
+        return self.t[-1]
