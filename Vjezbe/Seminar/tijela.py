@@ -7,6 +7,9 @@ from matplotlib import animation
 class Tijelo:
     objekti=[] #Lista koja sadržava sva tijela
     lines=[]
+    fig, ax = plt.subplots(figsize=(12, 6))
+        
+    #line, = ax.plot([],[])
     def __init__(self,m,r_0,v_0, ime):
         self.ime=ime #Samo za legendu
         self.m=m
@@ -37,34 +40,44 @@ class Tijelo:
         for obj in Tijelo.objekti:
             obj.r.append([obj.r[-1][0]+obj.v[-1][0]*dt, obj.r[-1][1]+obj.v[-1][1]*dt])
 
-    def crtanje(n):
-        for line, i in enumerate(Tijelo.lines):
-            #line.set_data([Tijelo.objekti[i].r[j][0] for j in range(len(Tijelo.Objekti[i].r))], [Tijelo.objekti[i].r[j][1] for j in range(len(Tijelo.Objekti[i].r))])
-            line.set_data(Tijelo.objekti[i].r[n][0], Tijelo.objekti[i].r[n][1])
-        return (Tijelo.lines) #Pripazi moze bit greska
-    def init():
-        for line in Tijelo.lines:
-            line.set_data([],[])
-        return (Tijelo.lines) #Pripazi moze bit greska
+    
 
-    def gibanje(t_fin, dt):
-        fig = plt.figure(figsize=(12,5))
-        ax = plt.subplot(1,1,1)
-        ax.set_xlabel("x/m")
-        ax.set_ylabel("y/m")
+    def gibanje(t_fin,dt):
         
+        """for i in range(len(Tijelo.objekti)): #Za svaki objekt inicijaliziramo liniju
+            line, = ax.plot([],[])
+            #Tijelo.lines.append(line,) Ne valja?"""
         
         t=0
         while t<t_fin:
             Tijelo.__korak(dt)
 
             t+=dt
-        """for obj in Tijelo.objekti:
-            plt.plot([el[0] for el in obj.r],[el[1] for el in obj.r], label=obj.ime)
-        plt.axis('equal')"""
-        anim = animation.FuncAnimation(fig,Tijelo.crtanje,init_func=Tijelo.init, frames=100, interval=20, blit=True)
+        #for obj in Tijelo.objekti:
+        #    plt.plot([el[0] for el in obj.r],[el[1] for el in obj.r], label=obj.ime)
+        #plt.axis('equal')
+        anim = animation.FuncAnimation(Tijelo.fig,Tijelo.crtanje,init_func=Tijelo.init, frames=len(Tijelo.objekti[0].r), interval=20, blit=False)
         #plt.legend()
         plt.show()
+    
+    def crtanje(frame):
+        for i, obj in enumerate(Tijelo.objekti):
+            x_data = [r[0] for r in obj.r[:frame]]
+            y_data = [r[1] for r in obj.r[:frame]]
+            Tijelo.lines[i].set_data(x_data, y_data)
+        return Tijelo.lines
+    @staticmethod
+    def init():
+        Tijelo.lines = []
+        for obj in Tijelo.objekti:
+            (line,) = Tijelo.ax.plot([], [], label=obj.ime)
+            Tijelo.lines.append(line)
+        Tijelo.ax.set_xlim(-5e11, 5e11)
+        Tijelo.ax.set_ylim(-5e11, 5e11)
+        Tijelo.ax.set_xlabel("x/m")
+        Tijelo.ax.set_ylabel("y/m")
+        Tijelo.ax.legend()
+        return Tijelo.lines
 
 
 Sunce = Tijelo(1.989e30,[0,0], [0,0], "Sunce")
@@ -73,4 +86,4 @@ Mars = Tijelo(6.4171e23, [2.2794e11,0], [0, 2.407e4], "Mars")
 Zemlja = Tijelo(5.9742e24,[1.486e11,0],[0, 2.9783e4], "Zemlja")
 Venera = Tijelo(4.8675e24, [1.0821e11,0],[0,3.502e4], "Venera")
 Komet = Tijelo(1e14,[-4.5*149.6e9,5.791e10],[17e3,600], "KOMET KOJI CE UNISTIT SVIT")
-Tijelo.gibanje(365.242*24*60*60, 3600/2)
+Tijelo.gibanje(365.242*24*60*60, 3600*12)
